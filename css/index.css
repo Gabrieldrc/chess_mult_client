@@ -1,7 +1,21 @@
 body {
     background-color: black;
 }
-#tablero {
-    display: grid;
-    grid-gap: 5px;
+#game {
+    display: none;
+    grid-template-columns: repeat(8, 50px);
+    grid-template-rows: repeat(8, 50px);
+    background-color: gray;
+    width: min-content;
+    margin: auto;
+}
+#game > div:hover {
+    cursor: pointer;
+    background-color: aliceblue;
+}
+#game > div {
+    align-content: center;
+}
+#turn {
+    color: white;
 }
