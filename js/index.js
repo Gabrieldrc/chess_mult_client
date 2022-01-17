@@ -1,42 +1,53 @@
 const socket = io('http://localhost:3000');
+let roomName
 let gameData
+let playerNumber
 let chessGrids = []
 let pieceSelected = null
 
-const boton = document.getElementById('boton')
+const joinRoomInput = document.getElementById('joinRoomInput')
+const joinRoomButton =  document.getElementById('joinRoomButton')
+const newGameButton = document.getElementById('newGameButton')
 const turnElement = document.getElementById('turn')
 const gameSection = document.getElementById('game')
+const roomNameElement = document.getElementById('roomName')
+const playerElement = document.getElementById('player')
 
-boton.addEventListener('click', buttonHandler)
+newGameButton.addEventListener('click', buttonHandler)
+joinRoomButton.addEventListener('click', joinRoomHandler)
 
 socket.on("connect", () => {
-    console.log(socket.id); // x8WIv7-mJelg7on_ALbx
     console.log('Connected')
 });
-socket.on('newGame', (res) => {
+socket.on('init', handleInit)
+socket.on('gameState', handleGameState)
+socket.on('gameCode', handleGameCode)
+socket.on('winner', handleWinner)
+socket.on('unknownCode', handleUnknownCode);
+socket.on('tooManyPlayers', handleTooManyPlayers);
+
+function handleInit(res, player) {
+    playerNumber = player
+    playerElement.innerText = 'player: ' + playerNumber
     gameData = res
-    turnElement.innerText = gameData.turn
+    turnElement.innerText = 'turn: ' + gameData.turn
     chessInit(gameData.board)
     paintChessBoard()
-})
-
-socket.on('update', (res)=> {
+}
+function handleGameState(res) {
     gameData = res
-    turnElement.innerText = gameData.turn
+    turnElement.innerText = 'turn: ' + gameData.turn
     chessInit(gameData.board)
     paintChessBoard()
-})
-
-socket.on('winner', (res)=> {
+}
+function handleWinner(res) {
     gameSection.style.display = "none"
     alert(res)
-})
-
+}
 function buttonHandler() {
     console.log('apretado')
     socket.emit('newGame', 'CHESS')
 }
-
 function createHtml(boardData) {
     let html = ""
     const pieceSrc = "./img/chess_pieces/"
@@ -53,7 +64,6 @@ function createHtml(boardData) {
     gameSection.innerHTML = html
     gameSection.style.display = "grid"
 }
-
 function saveElement(boardData) {
     chessGrids = []
     for (let i = 0; i < boardData.length; i++) {
@@ -65,13 +75,14 @@ function saveElement(boardData) {
         }
     }
 }
-
 function chessInit(boardData) {
     createHtml(boardData);
     saveElement(boardData);
 }
-
 function gridHandler(e) {
+    if (playerNumber !== gameData.turn) {
+        return
+    }
     const i = this.id[this.id.length - 2]
     const j = this.id[this.id.length - 1]
     const element = gameData.board[i][j]
@@ -101,7 +112,6 @@ function gridHandler(e) {
         pieceSelected = null
     }
 }
-
 function paintChessBoard() {
     let flag = true
     for (let i = 0; i < chessGrids.length; i++) {
@@ -112,7 +122,24 @@ function paintChessBoard() {
         flag = !flag
     }
 }
-
 function movePiece(from, to) {
-    socket.emit("play", {from: from, to: to})
+    socket.emit("play", {from: from, to: to}, roomName)
+}
+function joinRoomHandler(e) {
+    const roomCode = joinRoomInput.value
+    if (roomCode > 0) {
+        socket.emit('joinGame', roomCode)
+    }
+}
+function handleUnknownCode() {
+    alert('Unknown Game Code')
+}
+
+function handleTooManyPlayers() {
+    alert('This game is already in progress');
+}
+
+function handleGameCode(room) {
+    roomName = room
+    roomNameElement.innerText = 'room: ' + roomName
 }
