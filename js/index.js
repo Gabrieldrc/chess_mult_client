@@ -35,12 +35,14 @@ function handleInit(res, player) {
     turnElement.innerText = 'turn: ' + gameData.turn
     chessInit(gameData.board)
     paintChessBoard()
+    paintTurn()
 }
 function handleGameState(res) {
     gameData = res
     turnElement.innerText = 'turn: ' + gameData.turn
     chessInit(gameData.board)
     paintChessBoard()
+    paintTurn()
 }
 function handleWinner(res) {
     gameSection.style.display = "none"
@@ -65,7 +67,7 @@ function createHtml(boardData) {
     }
     formPageSection.style.display = "none"
     gameSection.innerHTML = html
-    gamePageSection.style.display = "block"
+    gamePageSection.style.display = "flex"
 }
 function saveElement(boardData) {
     chessGrids = []
@@ -145,4 +147,12 @@ function handleTooManyPlayers() {
 function handleGameCode(room) {
     roomName = room
     roomNameElement.innerText = 'room: ' + roomName
+}
+
+function paintTurn() {
+    if (gameData.turn == playerNumber) {
+        turnElement.style.backgroundColor = "#9CFAAB"
+    } else {
+        turnElement.style.backgroundColor = "red"
+    }
 }

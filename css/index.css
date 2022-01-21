@@ -41,6 +41,19 @@ body {
 }
 #gamePage {
     display: none;
+    flex-direction: column;
+}
+.flex_grow_1 {
+    flex-grow: 1;
+}
+.flex_grow_8 {
+    flex-grow: 8;
+}
+.flex_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 #game {
     display: grid;
@@ -57,6 +70,22 @@ body {
 #game > div {
     align-content: center;
 }
+.flex_line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 75%;
+    margin: auto;
+}
+.flex_line > p{
+    font-size: 1.8rem;
+    width: 200px;
+}
 #turn {
-    color: white;
+    display: grid;
+    border-radius: 25px;
+    justify-content: center;
+    font-weight: bold;
+    color: #081d2b;
 }
