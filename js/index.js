@@ -48,13 +48,9 @@ function handleWinner(res) {
 }
 function newGameButtonHandler() {
     console.log('apretado')
-    // socket.emit('newGame', 'CHESS')
-    formPageSection.style.display = "none"
-    // gamePageSection.style.display = "block"
+    socket.emit('newGame', 'CHESS')
 }
 function createHtml(boardData) {
-    console.log('createHTML')
-    gameSection.innerHTML = html
     let html = ""
     const pieceSrc = "./img/chess_pieces/"
     for (let i = 0; i < boardData.length; i++) {
@@ -68,6 +64,7 @@ function createHtml(boardData) {
         }
     }
     formPageSection.style.display = "none"
+    gameSection.innerHTML = html
     gamePageSection.style.display = "block"
 }
 function saveElement(boardData) {
