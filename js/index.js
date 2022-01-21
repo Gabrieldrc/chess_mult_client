@@ -10,10 +10,12 @@ const joinRoomButton =  document.getElementById('joinRoomButton')
 const newGameButton = document.getElementById('newGameButton')
 const turnElement = document.getElementById('turn')
 const gameSection = document.getElementById('game')
+const gamePageSection = document.getElementById('gamePage')
+const formPageSection = document.getElementById('formPage')
 const roomNameElement = document.getElementById('roomName')
 const playerElement = document.getElementById('player')
 
-newGameButton.addEventListener('click', buttonHandler)
+newGameButton.addEventListener('click', newGameButtonHandler)
 joinRoomButton.addEventListener('click', joinRoomHandler)
 
 socket.on("connect", () => {
@@ -44,11 +46,15 @@ function handleWinner(res) {
     gameSection.style.display = "none"
     alert(res)
 }
-function buttonHandler() {
+function newGameButtonHandler() {
     console.log('apretado')
-    socket.emit('newGame', 'CHESS')
+    // socket.emit('newGame', 'CHESS')
+    formPageSection.style.display = "none"
+    // gamePageSection.style.display = "block"
 }
 function createHtml(boardData) {
+    console.log('createHTML')
+    gameSection.innerHTML = html
     let html = ""
     const pieceSrc = "./img/chess_pieces/"
     for (let i = 0; i < boardData.length; i++) {
@@ -61,8 +67,8 @@ function createHtml(boardData) {
             html += "</div>"
         }
     }
-    gameSection.innerHTML = html
-    gameSection.style.display = "grid"
+    formPageSection.style.display = "none"
+    gamePageSection.style.display = "block"
 }
 function saveElement(boardData) {
     chessGrids = []
