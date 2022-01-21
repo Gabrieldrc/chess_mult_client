@@ -56,18 +56,23 @@ function createHtml(boardData) {
     let html = ""
     const pieceSrc = "./img/chess_pieces/"
     for (let i = 0; i < boardData.length; i++) {
+        html += "<div class='grid_8_col'>"
         for (let j = 0; j < boardData[i].length; j++) {
-            html += "<div id='chess-grid-" + i + j + "'>"
+            html += "<div id='chess-grid-" + i + j + "' class='grid_1'>"
             let element = boardData[i][j];
             if (element.name !== "") {
                 html += "<img src='" + pieceSrc + element.name + "_" + element.player + ".png'>"
             }
             html += "</div>"
         }
+        html += "</div>"
     }
     formPageSection.style.display = "none"
     gameSection.innerHTML = html
     gamePageSection.style.display = "flex"
+    if (playerNumber == 2) {
+        gameSection.style.flexDirection = "column-reverse"
+    }
 }
 function saveElement(boardData) {
     chessGrids = []

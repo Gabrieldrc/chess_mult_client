@@ -56,11 +56,11 @@ body {
     align-content: center;
 }
 #game {
-    display: grid;
-    grid-template-columns: repeat(8, 50px);
-    grid-template-rows: repeat(8, 50px);
+    display: flex;
+    flex-direction: column;
     background-color: gray;
-    width: min-content;
+    width: calc(8 * 50px);
+    height: calc(8 * 50px);
     margin: auto;
 }
 #game > div:hover {
@@ -88,4 +88,16 @@ body {
     justify-content: center;
     font-weight: bold;
     color: #081d2b;
+}
+.grid_8_col {
+    display: grid;
+    grid-template-columns: repeat(8, 50px);
+}
+.grid_1 {
+    height: 50px;
+    max-height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
