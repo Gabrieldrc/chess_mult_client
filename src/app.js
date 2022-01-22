@@ -1,3 +1,5 @@
+import "./styles/index.sass"
+import io from 'socket.io-client'
 const socket = io('http://localhost:3000');
 let roomName
 let gameData
@@ -53,22 +55,25 @@ function newGameButtonHandler() {
     socket.emit('newGame', 'CHESS')
 }
 function createHtml(boardData) {
-    let html = ""
-    const pieceSrc = "./img/chess_pieces/"
+    gameSection.innerHTML = ""
+    const images = importAll(require.context('./img/chess_pieces', false, /\.(png|jpe?g|svg)$/i))
+    console.log(images)
     for (let i = 0; i < boardData.length; i++) {
-        html += "<div class='grid_8_col'>"
+        const container = document.createElement('div')
+        container.classList.add('grid_8_col')
         for (let j = 0; j < boardData[i].length; j++) {
-            html += "<div id='chess-grid-" + i + j + "' class='grid_1'>"
+            const grid = document.createElement('div')
+            grid.id = 'chess-grid-' + i + j
+            grid.classList.add('grid_1')
             let element = boardData[i][j];
             if (element.name !== "") {
-                html += "<img src='" + pieceSrc + element.name + "_" + element.player + ".png'>"
+                grid.classList.add(element.name + '_' + element.player)
             }
-            html += "</div>"
+            container.appendChild(grid)
         }
-        html += "</div>"
+        gameSection.appendChild(container)
     }
     formPageSection.style.display = "none"
-    gameSection.innerHTML = html
     gamePageSection.style.display = "flex"
     if (playerNumber == 2) {
         gameSection.style.flexDirection = "column-reverse"
@@ -160,4 +165,8 @@ function paintTurn() {
     } else {
         turnElement.style.backgroundColor = "red"
     }
+}
+
+function importAll(r) {
+    return r.keys().map(r)
 }
