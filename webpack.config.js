@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     mode: 'development', // change to 'production'
-    entry: './src/app.js',
+    entry: './src/app.ts',
     devtool: 'inline-source-map', // Erased to production
     plugins: [
         new HtmlWebpackPlugin({
@@ -21,6 +21,11 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.tsx?$/i,
+                use: 'ts-loader',
+                exclude: /node_modules/i,
+            },
+            {
                 test: /\.sass$/i,
                 use: [
                     "style-loader",
@@ -35,5 +40,8 @@ module.exports = {
                 exclude: /node_modules/i,
             },
         ]
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
     }
 }
